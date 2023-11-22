@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.appstore.modules.app.mapper.SuAppsMapper">
+    
+    <resultMap type="SuApps" id="SuAppsResult">
+        <result property="appId"    column="app_id"    />
+        <result property="appLogo"    column="app_logo"    />
+        <result property="appName"    column="app_name"    />
+        <result property="addDescription"    column="add_description"    />
+        <result property="appVersion"    column="app_version"    />
+        <result property="authorId"    column="author_id"    />
+        <result property="authorName"    column="author_name"    />
+        <result property="authorPhone"    column="author_phone"    />
+        <result property="appPath"    column="app_path"    />
+        <result property="appSize"    column="app_size"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="creatTime"    column="creat_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="isDel"    column="is_del"    />
+    </resultMap>
+
+    <sql id="selectSuAppsVo">
+        select app_id, app_logo, app_name, add_description, app_version, author_id, author_name, author_phone, app_path, app_size, create_by, creat_time, update_time, update_by, is_del from su_apps
+    </sql>
+
+    <select id="selectSuAppsList" parameterType="SuApps" resultMap="SuAppsResult">
+        <include refid="selectSuAppsVo"/>
+        <where>  
+            <if test="appLogo != null  and appLogo != ''"> and app_logo = #{appLogo}</if>
+            <if test="appName != null  and appName != ''"> and app_name like concat('%', #{appName}, '%')</if>
+            <if test="addDescription != null  and addDescription != ''"> and add_description = #{addDescription}</if>
+            <if test="appVersion != null  and appVersion != ''"> and app_version = #{appVersion}</if>
+            <if test="authorId != null "> and author_id = #{authorId}</if>
+            <if test="authorName != null  and authorName != ''"> and author_name like concat('%', #{authorName}, '%')</if>
+            <if test="authorPhone != null  and authorPhone != ''"> and author_phone = #{authorPhone}</if>
+            <if test="appPath != null  and appPath != ''"> and app_path = #{appPath}</if>
+            <if test="appSize != null "> and app_size = #{appSize}</if>
+            <if test="creatTime != null "> and creat_time = #{creatTime}</if>
+            <if test="isDel != null  and isDel != ''"> and is_del = #{isDel}</if>
+        </where>
+    </select>
+    
+    <select id="selectSuAppsByAppId" parameterType="Long" resultMap="SuAppsResult">
+        <include refid="selectSuAppsVo"/>
+        where app_id = #{appId}
+    </select>
+        
+    <insert id="insertSuApps" parameterType="SuApps" useGeneratedKeys="true" keyProperty="appId">
+        insert into su_apps
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appLogo != null">app_logo,</if>
+            <if test="appName != null">app_name,</if>
+            <if test="addDescription != null">add_description,</if>
+            <if test="appVersion != null">app_version,</if>
+            <if test="authorId != null">author_id,</if>
+            <if test="authorName != null">author_name,</if>
+            <if test="authorPhone != null">author_phone,</if>
+            <if test="appPath != null">app_path,</if>
+            <if test="appSize != null">app_size,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="creatTime != null">creat_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="isDel != null">is_del,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appLogo != null">#{appLogo},</if>
+            <if test="appName != null">#{appName},</if>
+            <if test="addDescription != null">#{addDescription},</if>
+            <if test="appVersion != null">#{appVersion},</if>
+            <if test="authorId != null">#{authorId},</if>
+            <if test="authorName != null">#{authorName},</if>
+            <if test="authorPhone != null">#{authorPhone},</if>
+            <if test="appPath != null">#{appPath},</if>
+            <if test="appSize != null">#{appSize},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatTime != null">#{creatTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="isDel != null">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSuApps" parameterType="SuApps">
+        update su_apps
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appLogo != null">app_logo = #{appLogo},</if>
+            <if test="appName != null">app_name = #{appName},</if>
+            <if test="addDescription != null">add_description = #{addDescription},</if>
+            <if test="appVersion != null">app_version = #{appVersion},</if>
+            <if test="authorId != null">author_id = #{authorId},</if>
+            <if test="authorName != null">author_name = #{authorName},</if>
+            <if test="authorPhone != null">author_phone = #{authorPhone},</if>
+            <if test="appPath != null">app_path = #{appPath},</if>
+            <if test="appSize != null">app_size = #{appSize},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="creatTime != null">creat_time = #{creatTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="isDel != null">is_del = #{isDel},</if>
+        </trim>
+        where app_id = #{appId}
+    </update>
+
+    <delete id="deleteSuAppsByAppId" parameterType="Long">
+        delete from su_apps where app_id = #{appId}
+    </delete>
+
+    <delete id="deleteSuAppsByAppIds" parameterType="String">
+        delete from su_apps where app_id in 
+        <foreach item="appId" collection="array" open="(" separator="," close=")">
+            #{appId}
+        </foreach>
+    </delete>
+</mapper>
